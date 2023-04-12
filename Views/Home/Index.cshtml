@@ -1,8 +1,17 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+@model IEnumerable<JobPortal.Models.JobModel>
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Welcome To Jobs Portal</h1>
+    <br />
+    <form method="post" action="/Home/SearchJob">
+        <div class="d-flex">
+        <input  class="form-control" type="text" placeholder="search jobs" name="job-search" />
+        <button type="submit" class="btn btn-outline-secondary">Search</button>
+        </div>
+    </form>
+
+   
 </div>

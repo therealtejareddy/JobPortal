@@ -1,0 +1,49 @@
+﻿@{
+    ViewData["Title"] = "Jobs Page";
+}
+@model IEnumerable<JobPortal.Models.JobModel>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.JobTitle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.JobDescription)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.JobCompany)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.JobSalary)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.JobMajorSkill)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.JobTitle)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.JobDescription)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.JobCompany)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.JobSalary)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.JobMajorSkill)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
