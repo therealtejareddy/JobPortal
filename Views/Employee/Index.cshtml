@@ -1,45 +1,43 @@
-﻿@*@model IEnumerable<JobPortal.Models.JobModel>
-*@
-
-@model dynamic
+﻿@model IEnumerable<JobPortal.Models.JobModel>
 
 @{
     ViewData["Title"] = "Index";
-    List<CategoryModel> categories = Model.Categories;
 }
 
-<h1>Welcome Admin !</h1>
+<h1>Index</h1>
 
 <p>
-    <a asp-action="CreateJob">Create New Job</a> | <a asp-action="CreateCategory">Create New Category</a>
+    <a asp-action="Create">Create New</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                Job Title
+                @Html.DisplayNameFor(model => model.JobTitle)
             </th>
             <th>
-                Job Description
+                @Html.DisplayNameFor(model => model.JobDescription)
             </th>
             <th>
-                Job Company
+                @Html.DisplayNameFor(model => model.JobCompany)
             </th>
             <th>
-                Job Salary
+                @Html.DisplayNameFor(model => model.JobSalary)
             </th>
             <th>
-                Job MajorSkill
+                @Html.DisplayNameFor(model => model.JobMajorSkill)
             </th>
             <th>
-               Category
+                @Html.DisplayNameFor(model => model.Category)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (JobModel item in (List<JobModel>)Model.Jobs)
-        {
+@foreach (var item in Model) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.JobTitle)
@@ -56,11 +54,12 @@
             <td>
                 @Html.DisplayFor(modelItem => item.JobMajorSkill)
             </td>
-                <td>
-                    @*@Html.DisplayFor(modelItem => Model.Categories.Find(item.Category))*@
-                    @*@categories.Where(cat => item.Category==cat.Id).FirstOrDefault().CategoryName;*@
-                    @Html.DisplayFor(modelItem => item.Category)
-                </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Category)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User)
+            </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.JobId">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.JobId">Details</a> |

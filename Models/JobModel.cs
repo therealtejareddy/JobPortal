@@ -18,9 +18,9 @@ namespace JobPortal.Models
         public string JobMajorSkill { get; set; }
 
         [Required]
-        public CategoryModel Category { get; set; }
+        public int Category { get; set; }
 
         [Required]
-        public UserModel User { get; set; }
+        public string User { get; set; }
     }
 }
