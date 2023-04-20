@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<ApplicationDBContext>(options => options.UseSqlServer(
-    builder.Configuration.GetConnectionString("RiyazDB")
+    builder.Configuration.GetConnectionString("DefaultDatabase")
     ));
 // Add services to the container.
 builder.Services.AddControllersWithViews();

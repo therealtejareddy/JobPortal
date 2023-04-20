@@ -10,6 +10,9 @@ namespace JobPortal.Data
         }
 
         public DbSet<JobModel> Jobs { get; set; }
+        public DbSet<CategoryModel> Categories { get; set; }
+
+        public DbSet<UserModel> Users { get; set; }
 
 
     }

@@ -27,6 +27,13 @@ namespace JobPortal.Controllers
                           Problem("Entity set 'ApplicationDBContext.Jobs'  is null.");
         }
 
+        public async Task<IActionResult> CategoryIndex()
+        {
+            return _context.Categories != null ?
+                        View(await _context.Categories.ToListAsync()) :
+                        Problem("Entity set 'ApplicationDBContext.Jobs'  is null.");
+        }
+
         // GET: JobModels/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -46,8 +53,14 @@ namespace JobPortal.Controllers
         }
 
         // GET: JobModels/Create
-        public IActionResult Create()
+        public IActionResult CreateJob()
         {
+            List<SelectListItem> categories = new List<SelectListItem>();
+            _context.Categories.ToList().ForEach(item =>
+            {
+                categories.Add(new SelectListItem { Text = item.CategoryName, Value = item.Id.ToString() });
+            });
+            ViewData["categories"] = categories;
             return View();
         }
 
@@ -56,15 +69,36 @@ namespace JobPortal.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("JobId,JobTitle,JobDescription,JobCompany,JobSalary,JobMajorSkill")] JobModel jobModel)
+        public async Task<IActionResult> CreateJob([Bind("JobId,JobTitle,JobDescription,JobCompany,JobSalary,JobMajorSkill")] JobModel jobModel)
         {
-            if (ModelState.IsValid)
-            {
+                int categoryId = Convert.ToInt32(Request.Form["caregories"]);
+                Console.WriteLine(categoryId);
+                jobModel.User = _context.Users.Find(Request.Cookies["user"]);
                 _context.Add(jobModel);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
+        }
+
+        // GET: JobModels/CreateCategory
+        public IActionResult CreateCategory()
+        {
+            return View();
+        }
+
+        // POST: JobModels/CreateCategory
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateCategory([Bind("CategoryName")] CategoryModel categoryModel)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(categoryModel);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(CategoryIndex));
             }
-            return View(jobModel);
+            return View(categoryModel);
         }
 
         // GET: JobModels/Edit/5
@@ -153,6 +187,42 @@ namespace JobPortal.Controllers
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> DeleteCategory(int? id)
+        {
+            if (id == null || _context.Categories == null)
+            {
+                return NotFound();
+            }
+
+            var cModel = await _context.Categories
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (cModel == null)
+            {
+                return NotFound();
+            }
+
+            return View(cModel);
+        }
+
+        // POST: JobModels/Delete/5
+        [HttpPost, ActionName("DeleteCategory")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmedCategory(int id)
+        {
+            if (_context.Categories == null)
+            {
+                return Problem("Entity set 'ApplicationDBContext.Jobs'  is null.");
+            }
+            var cModel = await _context.Categories.FindAsync(id);
+            if (cModel != null)
+            {
+                _context.Categories.Remove(cModel);
+            }
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(CategoryIndex));
         }
 
         private bool JobModelExists(int id)
