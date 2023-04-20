@@ -58,8 +58,8 @@
             </td>
                 <td>
                     @*@Html.DisplayFor(modelItem => Model.Categories.Find(item.Category))*@
-                    @*@categories.Where(cat => item.Category==cat.Id).FirstOrDefault().CategoryName;*@
-                    @Html.DisplayFor(modelItem => item.Category)
+                    @categories.Where(cat => item.Category==cat.Id).FirstOrDefault().CategoryName
+                    @*@Html.DisplayFor(modelItem => item.Category)*@
                 </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.JobId">Edit</a> |

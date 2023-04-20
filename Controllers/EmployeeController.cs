@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using JobPortal.Data;
 using JobPortal.Models;
+using System.Dynamic;
 
 namespace JobPortal.Controllers
 {
@@ -22,9 +23,16 @@ namespace JobPortal.Controllers
         // GET: Employee
         public async Task<IActionResult> Index()
         {
-              return _context.Jobs != null ? 
-                          View(await _context.Jobs.ToListAsync()) :
-                          Problem("Entity set 'ApplicationDBContext.Jobs'  is null.");
+            var jobsData = await _context.Jobs.ToListAsync();
+            var categoriesData = await _context.Categories.ToListAsync();
+            var userData = await _context.Users.ToListAsync();
+            dynamic myModel = new ExpandoObject();
+            myModel.Jobs = jobsData;
+            myModel.Categories = categoriesData;
+            myModel.Users = userData;
+            return _context.Jobs != null ?
+                        View(myModel) :
+                        Problem("Entity set 'ApplicationDBContext.Jobs'  is null.");
         }
 
         // GET: Employee/Details/5
@@ -48,6 +56,12 @@ namespace JobPortal.Controllers
         // GET: Employee/Create
         public IActionResult Create()
         {
+            List<SelectListItem> categories = new List<SelectListItem>();
+            _context.Categories.ToList().ForEach(item =>
+            {
+                categories.Add(new SelectListItem { Text = item.CategoryName, Value = item.Id.ToString() });
+            });
+            ViewData["categories"] = categories;
             return View();
         }
 
@@ -58,7 +72,7 @@ namespace JobPortal.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("JobId,JobTitle,JobDescription,JobCompany,JobSalary,JobMajorSkill")] JobModel jobModel)
         {
-            int categoryId = Convert.ToInt32(Request.Form["categories"]);
+            int categoryId = Convert.ToInt32(Request.Form["Category"]);
             Console.WriteLine(categoryId);
             jobModel.Category = categoryId;
             jobModel.User = Request.Cookies["user"];

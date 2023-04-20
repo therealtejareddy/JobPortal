@@ -77,7 +77,7 @@ namespace JobPortal.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateJob([Bind("JobId,JobTitle,JobDescription,JobCompany,JobSalary,JobMajorSkill")] JobModel jobModel)
         {
-                int categoryId = Convert.ToInt32(Request.Form["caregories"]);
+                int categoryId = Convert.ToInt32(Request.Form["Category"]);
                 Console.WriteLine(categoryId);
             Console.WriteLine(Request.Form["caregories"]);
                 jobModel.Category = categoryId;

@@ -1,7 +1,9 @@
-﻿@model IEnumerable<JobPortal.Models.JobModel>
+﻿@model dynamic
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Index - Employee";
+    List<CategoryModel> categories = Model.Categories;
+    List<UserModel> users = Model.Users;
 }
 
 <h1>Index</h1>
@@ -13,31 +15,32 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.JobTitle)
+                Job Title
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.JobDescription)
+                Job Description
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.JobCompany)
+                Job Company
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.JobSalary)
+                Job Salary
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.JobMajorSkill)
+               Job Major Skill
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Category)
+                Category
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.User)
+                Added By
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+        @foreach (JobModel item in (List<JobModel>)Model.Jobs)
+        {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.JobTitle)
@@ -55,10 +58,10 @@
                 @Html.DisplayFor(modelItem => item.JobMajorSkill)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Category)
+                  @categories.Where(cat => item.Category==cat.Id).FirstOrDefault().CategoryName
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.User)
+                    @users.Where(user => item.User==user.Id).FirstOrDefault().UserName
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.JobId">Edit</a> |

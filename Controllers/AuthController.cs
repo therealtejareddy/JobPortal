@@ -51,6 +51,23 @@ namespace JobPortal.Controllers
         }
         public IActionResult Login()
         {
+                var user = _context.Users.Where(user => user.Id==Request.Cookies["user"]).FirstOrDefault();
+                if (user != null)
+                {
+                    if (user.Role == "Admin")
+                    {
+                        return RedirectToAction("Index", "Admin");
+                    }
+                else if (user.Role == "User")
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+                else if (user.Role == "Employee")
+                {
+                    return RedirectToAction("Index", "Employee");
+                }
+            }
+            
             return View();
         }
 
@@ -75,7 +92,7 @@ namespace JobPortal.Controllers
                 }
                 if (validUser.Role == "Employee")
                 {
-                    return RedirectToAction("Index", "Admin");
+                    return RedirectToAction("Index", "Employee");
                 }
             }
 
